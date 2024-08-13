@@ -1,0 +1,7 @@
+name: buildkite-agent wrapper
+description: Wrapper for buildkite-agent
+author: https://github.com/Canva
+requirements: [bash, buildkite-agent, python3]
+configuration:
+  properties: { }
+  required: [ ]

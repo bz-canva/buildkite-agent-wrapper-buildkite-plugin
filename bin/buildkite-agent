@@ -1,0 +1,6 @@
+#!/bin/bash
+
+script_dir="$(dirname "${BASH_SOURCE[0]}")"
+bin_dir="$(realpath "$script_dir")"
+
+nix-shell "$bin_dir/buildkite-agent.py" "$@"
