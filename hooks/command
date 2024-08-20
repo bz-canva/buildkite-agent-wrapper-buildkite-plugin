@@ -11,4 +11,4 @@ bin_dir="$(realpath "$script_dir/../bin")"
 
 export PATH="$bin_dir:$PATH"
 
-eval "${BUILDKITE_COMMAND}"
+#eval "${BUILDKITE_COMMAND}"
