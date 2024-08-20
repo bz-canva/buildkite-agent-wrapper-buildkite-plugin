@@ -49,8 +49,7 @@ def _inject_into_steps(steps: list[Any]):
 def _inject_trusted_tags_into_pipeline_yaml(pipeline_yaml: str):
     yaml = YAML()
     pipeline_data = yaml.load(pipeline_yaml)
-    # if current branch is trusted branch, add 'trusted=true'
-    # an agent is started with trusted=true, then it could change to trusted=false during job running
+    # if current branch is trusted branch, add 'trusted=true', else ass 'trusted=false'
     if isinstance(pipeline_data, list):
         _inject_into_steps(pipeline_data)
     else:
@@ -72,4 +71,5 @@ def main():
 
 
 if __name__ == "__main__":
+    print(f"config: {os.getenv('BUILDKITE_PLUGIN_CONFIGURATION')}")
     main()

@@ -10,5 +10,3 @@ script_dir="$(dirname "${BASH_SOURCE[0]}")"
 bin_dir="$(realpath "$script_dir/../bin")"
 
 export PATH="$bin_dir:/nix/var/nix/profiles/default/bin:$PATH"
-
-echo "PATH is now: $PATH"
