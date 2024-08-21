@@ -1,5 +1,5 @@
 #! /nix/var/nix/profiles/default/bin/nix-shell
-# ! nix-shell python3.nix -i python3
+#! nix-shell python3.nix -i python3
 import fnmatch
 import json
 import os
