@@ -35,12 +35,15 @@ def _search_for_real_buildkite_agent() -> str:
 
 
 # BUILDKITE_PLUGINS="[{\"github.com/bz-canva/buildkite-agent-wrapper-buildkite-plugin#main\":
-# {\"trusted_branches\":[\"master\",\"release-*\",\"boris-trusted*\"]}}, ... }]"
+#                       {\"trusted_branches\":[\"master\",\"release-*\",\"boris-trusted*\"]}}, ...
+#                     }
+#                    ]"
 def _get_trusted_branches(json_str: str) -> list[str]:
-    json_data = json.loads(json_str)
-    plugin_config: dict[str, Any] = next(
-        (key for key in json_data if "buildkite-agent-wrapper-buildkite-plugin" in key))
-    return plugin_config.get("trusted_branches")
+    json_data: list[dict[str: Any]] = json.loads(json_str)
+    merged_dict = {k: v for d in json_data for k, v in d.items()}
+    my_config: dict[str, Any] = next(
+        (v for k,v in merged_dict.items() if "buildkite-agent-wrapper-buildkite-plugin" in k))
+    return my_config.get("trusted_branches")
 
 
 def _is_trusted_job() -> bool:
@@ -103,7 +106,6 @@ def main():
             print(f"YAML:\n {yaml}")
             temp_file.write(yaml)
             temp_file_name = temp_file.name
-            # print(_read_file_to_str(str(temp_file)))
         _run_inherit_io([_search_for_real_buildkite_agent()] + sys.argv[1:3] + [temp_file_name] + sys.argv[3:])
     else:
         _run_inherit_io([_search_for_real_buildkite_agent()] + sys.argv[1:])
