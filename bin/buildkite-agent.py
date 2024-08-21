@@ -92,10 +92,15 @@ def _run_inherit_io(args: list[str]) -> int:
 
 
 def main():
-    if len(sys.argv) > 3 and sys.argv[1:3] == ['pipeline', 'upload']:
-        pipeline_file = sys.argv[3]
-        yaml = _inject_trusted_tags_into_pipeline_yaml(_read_file_to_str(pipeline_file))
+    if sys.argv[1:3] == ['pipeline', 'upload']:
+        if len(sys.argv) == 3:
+            pipeline_yaml = sys.stdin.read()
+        else:
+            pipeline_yaml = _read_file_to_str(sys.argv[3])
+
+        yaml = _inject_trusted_tags_into_pipeline_yaml(pipeline_yaml)
         with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+            print(f"YAML:\n {yaml}")
             temp_file.write(yaml)
             _run_inherit_io([_search_for_real_buildkite_agent()] + sys.argv[1:3] + [temp_file.name] + sys.argv[3:])
     else:
