@@ -99,11 +99,12 @@ def main():
             pipeline_yaml = _read_file_to_str(sys.argv[3])
 
         yaml = _inject_trusted_tags_into_pipeline_yaml(pipeline_yaml)
-        with tempfile.NamedTemporaryFile(mode='w', delete=True) as temp_file:
+        with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
             print(f"YAML:\n {yaml}")
             temp_file.write(yaml)
-            print(_read_file_to_str(str(temp_file)))
-            _run_inherit_io([_search_for_real_buildkite_agent()] + sys.argv[1:3] + [temp_file.name] + sys.argv[3:])
+            temp_file_name = temp_file.name
+            # print(_read_file_to_str(str(temp_file)))
+        _run_inherit_io([_search_for_real_buildkite_agent()] + sys.argv[1:3] + [temp_file_name] + sys.argv[3:])
     else:
         _run_inherit_io([_search_for_real_buildkite_agent()] + sys.argv[1:])
 
